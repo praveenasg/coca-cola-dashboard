@@ -219,18 +219,13 @@ function pointermoved(
 
   dot
     .select("text")
-    .attr("font-size", "10")
-    .attr("x", -10) // Start off-screen to the left
-    .text("") // Clear existing text (optional)
-    .transition()
-    .duration(500) // Duration of the transition in milliseconds
-    .attr("x", 0)
-    .attr("font-size", "20") // Slide text in from the left
-    .style("opacity", 0) // Start with opacity 0 (fully transparent)
-    .on("start", function () {
-      d3.select(this).text(`${dataset.name}: ${point.value}`); // Update text during transition
-    })
-    .style("opacity", 1); // Fade in by setting opacity to 1 (fully opaque)
+    .transition() // Start the transition
+    .duration(500) // Duration of the animation in milliseconds
+    .style("opacity", 0) // Start with the text being invisible
+    .transition() // Chain another transition
+    .duration(500) // Duration of the second part of the animation
+    .style("opacity", 1) // Fade the text to full opacity
+    .text(`${dataset.name}: ${point.value}`); // Update the text
 
   (svg.node() as CustomSVGElement).value = point;
   svg.dispatch("input", { bubbles: true, detail: point, cancelable: false });
